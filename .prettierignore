@@ -1,0 +1,17 @@
+.git
+.devcontainer
+.vscode
+node_modules
+vendor
+storage
+bootstrap/cache
+public/build
+coverage
+dist
+build
+*.min.js
+*.min.css
+composer.lock
+package-lock.json
+pnpm-lock.yaml
+yarn.lock

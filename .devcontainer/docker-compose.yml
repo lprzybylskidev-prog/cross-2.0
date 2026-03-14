@@ -1,0 +1,122 @@
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+      args:
+        USERNAME: vscode
+        USER_UID: 1000
+        USER_GID: 1000
+        NODE_MAJOR: 22
+    container_name: cross-app
+    working_dir: /workspace
+    environment:
+      APP_NAME: cross
+      APP_ENV: local
+      APP_DEBUG: "true"
+      PHP_IDE_CONFIG: serverName=cross-app
+      XDEBUG_MODE: debug,develop
+      XDEBUG_CONFIG: client_host=host.docker.internal client_port=9003 idekey=VSCODE
+      DB_CONNECTION: pgsql
+      DB_HOST: pgsql
+      DB_PORT: 5432
+      DB_DATABASE: cross
+      DB_USERNAME: cross
+      DB_PASSWORD: cross
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      MAIL_HOST: mailpit
+      MAIL_PORT: 1025
+      MAIL_ENCRYPTION: null
+      MAIL_FROM_ADDRESS: cross@cross.com
+      MAIL_FROM_NAME: cross
+      COMPOSER_HOME: /home/vscode/.composer
+      COMPOSER_CACHE_DIR: /home/vscode/.composer/cache
+    volumes:
+      - ..:/workspace:cached
+      - composer-cache:/home/vscode/.composer/cache
+      - npm-cache:/home/vscode/.npm
+      - ssh-data:/home/vscode/.ssh
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    depends_on:
+      pgsql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      mailpit:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "php -v >/dev/null && php -m | grep -qi xdebug"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 15s
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: cross-nginx
+    depends_on:
+      app:
+        condition: service_healthy
+    volumes:
+      - ..:/workspace:cached
+      - ../docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "8080:80"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 10s
+
+  pgsql:
+    image: postgres:17-alpine
+    container_name: cross-pgsql
+    environment:
+      POSTGRES_DB: cross
+      POSTGRES_USER: cross
+      POSTGRES_PASSWORD: cross
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgsql-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cross -d cross -h 127.0.0.1 -p 5432"]
+      interval: 10s
+      timeout: 5s
+      retries: 8
+      start_period: 15s
+
+  redis:
+    image: redis:7.4-alpine
+    container_name: cross-redis
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 8
+      start_period: 10s
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: cross-mailpit
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:8025 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 8
+      start_period: 10s
+
+volumes:
+  pgsql-data:
+  composer-cache:
+  npm-cache:
+  ssh-data:

@@ -1,0 +1,19 @@
+{
+  "recommendations": [
+    "bmewburn.vscode-intelephense-client",
+    "MehediDracula.php-namespace-resolver",
+    "amiralizadeh9480.laravel-extra-intellisense",
+    "cweijan.vscode-database-client2",
+    "dbaeumer.vscode-eslint",
+    "eamodio.gitlens",
+    "esbenp.prettier-vscode",
+    "ms-azuretools.vscode-docker",
+    "onecentlin.laravel-blade",
+    "ryannaddy.laravel-artisan",
+    "stylelint.vscode-stylelint",
+    "xdebug.php-debug",
+    "bradlc.vscode-tailwindcss",
+    "Vue.volar",
+    "mikestead.dotenv"
+  ]
+}
