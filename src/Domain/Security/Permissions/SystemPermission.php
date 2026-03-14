@@ -7,5 +7,6 @@ namespace Cross\Domain\Security\Permissions;
 enum SystemPermission: string
 {
     case Admin = 'admin';
-    case HomeView = 'home.view';
+    case DebtorsView = 'debtors.view';
+    case PreferencesUpdate = 'preferences.update';
 }

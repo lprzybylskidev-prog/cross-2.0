@@ -1,18 +1,19 @@
 <script setup>
 import { ref } from 'vue';
 import { Head, useForm } from '@inertiajs/vue3';
-import AuthenticationCard from '@/Components/AuthenticationCard.vue';
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
+import AuthLayout from '@/Layouts/AuthLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import { useTranslations } from '@/Composables/useTranslations';
 
 const form = useForm({
     password: '',
 });
 
 const passwordInput = ref(null);
+const { t } = useTranslations();
 
 const submit = () => {
     form.post(route('password.confirm'), {
@@ -26,28 +27,25 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Secure Area" />
+    <Head :title="t('auth.confirm_password.title')" />
 
-    <AuthenticationCard>
-        <template #logo>
-            <AuthenticationCardLogo />
-        </template>
-
-        <div class="mb-4 text-sm text-gray-600">
-            This is a secure area of the application. Please confirm your password before
-            continuing.
+    <AuthLayout
+        :title="t('auth.confirm_password.title')"
+        :description="t('auth.confirm_password.description')"
+    >
+        <div class="mb-4 text-sm text-[color:var(--ui-text-soft)]">
+            {{ t('auth.confirm_password.helper') }}
         </div>
 
-        <form @submit.prevent="submit">
+        <form class="space-y-4" novalidate @submit.prevent="submit">
             <div>
-                <InputLabel for="password" value="Password" />
+                <InputLabel for="password" :value="t('common.password')" />
                 <TextInput
                     id="password"
                     ref="passwordInput"
                     v-model="form.password"
                     type="password"
                     class="mt-1 block w-full"
-                    required
                     autocomplete="current-password"
                     autofocus
                 />
@@ -56,13 +54,12 @@ const submit = () => {
 
             <div class="mt-4 flex justify-end">
                 <PrimaryButton
-                    class="ms-4"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
-                    Confirm
+                    {{ t('auth.confirm_password.submit') }}
                 </PrimaryButton>
             </div>
         </form>
-    </AuthenticationCard>
+    </AuthLayout>
 </template>

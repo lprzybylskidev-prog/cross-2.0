@@ -5,5 +5,15 @@
             "@/*": ["resources/js/*"]
         }
     },
-    "exclude": ["node_modules", "public"]
+    "include": [
+        "resources/js/**/*.js",
+        "resources/js/**/*.vue",
+        "resources/js/**/*.ts",
+        "resources/js/**/*.d.ts",
+        "tests/**/*.js",
+        "tests/**/*.ts",
+        "vite.config.js",
+        "vitest.config.ts"
+    ],
+    "exclude": ["node_modules", "public", "vendor", "storage", "bootstrap/cache"]
 }

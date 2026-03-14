@@ -18,10 +18,12 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
+            'route_permission' => \App\Http\Middleware\EnsureRoutePermission::class,
         ]);
 
         $middleware->web(
             append: [
+                \App\Http\Middleware\SetApplicationPreferences::class,
                 \App\Http\Middleware\HandleInertiaRequests::class,
                 \App\Http\Middleware\EnsureRoutePermission::class,
                 \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,

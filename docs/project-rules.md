@@ -25,6 +25,8 @@ Technology stack:
 - Every feature must be designed before implementation.
 - Implementations should be production-ready and not require immediate refactoring.
 - Prefer clarity, explicitness, and consistency over shortcuts.
+- Unused code, files, translations, assets, and legacy scaffolding must be removed as part of the current change instead of being left in the repository.
+- Generated public assets (for example Filament assets published to `public/`) must remain generated artifacts: they must not be manually edited, prettified, or reformatted, and if they are committed they should stay in their published minified form.
 
 ## 3. PHP Standards
 
@@ -84,6 +86,32 @@ API interaction rules:
 - API logic must live in dedicated `services` or `composables`,
 - avoid embedding API calls directly in view-heavy components whenever possible.
 
+UI/UX rules:
+
+- the UI must use dedicated application layouts for authenticated application screens and authentication screens,
+- application layouts must expose the project-level controls required by the current UI model, including locale switching, theme switching, and reusable foundations for future country-related UI extensions,
+- every page and component must be fully responsive from the first implementation,
+- the default visual theme is dark mode, with support for light and system themes,
+- theme colors should follow the project palette direction currently based on Catppuccin-inspired dark Mocha and light Latte variants,
+- theme tokens and component styling must be consistent across application pages, authentication pages, and transactional emails,
+- visual design should resemble a business application, not a marketing landing page,
+- native browser HTML validation must not be used; forms must rely on project-defined validation logic and messaging,
+- frontend feedback must use a shared flash/notification module that supports backend and frontend events,
+- flash and toast notifications must be displayed in the top-right area using the shared notification module,
+- iconography should use `tabler.io` packages adopted by the project,
+- country flag rendering must use a reusable system prepared for multi-country support.
+
+Localization rules:
+
+- the application must support Polish and English in parallel,
+- the default locale is Polish,
+- all translatable texts must use translation keys (for example `auth.login.submit`) instead of inline natural-language labels,
+- backend validation messages, page labels, component copy, and transactional email content must follow the same translation-key strategy,
+- validation attribute names must be localized and human-readable in every supported language, so user-facing validation messages must never expose raw field keys such as `password`, `current_password`, `locale`, or `theme`,
+- backend and frontend translations must stay synchronized for all user-facing flows,
+- every translation change introduced in one supported language must be updated in the other supported languages within the same change,
+- locale preference must persist in cookies for guests and in the authenticated user profile for signed-in users.
+
 ## 6. Permissions and Access Control
 
 The project uses `spatie/laravel-permission`.
@@ -112,6 +140,10 @@ Rules:
 ## 8. Navigation
 
 - Every system page must provide breadcrumbs.
+- Authentication and account-access screens may intentionally omit breadcrumbs when they do not improve usability.
+- The left application navigation must list system modules.
+- The top application navigation must list links that belong to the currently opened module only.
+- Peripheral screens such as user profile or account utilities must not be treated as application modules in the main navigation.
 
 ## 9. Testing Strategy
 
@@ -121,6 +153,10 @@ Rules:
 
 - every business operation must have a unit test or an integration test,
 - frontend code should also include automated tests.
+- new or materially changed shared frontend components, composables, and layout interactions must receive automated frontend tests within the same change; helper-only coverage is not sufficient when the behavior lives in UI components or shared presentation logic,
+- shared mechanisms (for example middleware, localization plumbing, breadcrumb sharing, layout-level behavior, or permission infrastructure) must be tested at the shared layer rather than duplicated through module-specific tests,
+- module-specific tests should focus on module behavior, while a single smoke test per module is acceptable only when it verifies module wiring and not shared infrastructure already covered elsewhere.
+- changes explicitly requested as temporary, test-only, visual-only, or throwaway prototypes do not require dedicated tests if they are expected to be removed shortly and do not alter real business behavior.
 
 Recommended test distribution:
 
@@ -135,6 +171,7 @@ Recommended test distribution:
 - Documentation must describe the current, factual state of the project only.
 - Documentation must not include implementation history, removed elements, rejected approaches, prompt instructions, or explanations of what is not used.
 - If a component or behavior no longer exists in the codebase, references to it must be removed from documentation instead of being described historically.
+- Changes explicitly marked by the user as temporary, test-only, or short-lived visual experiments do not require dedicated documentation files or README updates when they are intended for near-term removal.
 
 ## 11. Compliance
 

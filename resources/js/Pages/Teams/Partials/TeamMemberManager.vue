@@ -102,35 +102,35 @@ const displayableRole = (role) => {
 
             <!-- Add Team Member -->
             <FormSection @submitted="addTeamMember">
-                <template #title> Add Team Member </template>
+                <template #title> {{ $t('teams.members.add_title') }} </template>
 
                 <template #description>
-                    Add a new team member to your team, allowing them to collaborate with you.
+                    {{ $t('teams.members.add_description') }}
                 </template>
 
                 <template #form>
                     <div class="col-span-6">
-                        <div class="max-w-xl text-sm text-gray-600">
-                            Please provide the email address of the person you would like to add to
-                            this team.
+                        <div class="max-w-xl text-sm text-[color:var(--ui-text-soft)]">
+                            {{ $t('teams.members.add_helper') }}
                         </div>
                     </div>
 
                     <!-- Member Email -->
                     <div class="col-span-6 sm:col-span-4">
-                        <InputLabel for="email" value="Email" />
+                        <InputLabel for="email" :value="$t('common.email')" />
                         <TextInput
                             id="email"
                             v-model="addTeamMemberForm.email"
-                            type="email"
+                            type="text"
                             class="mt-1 block w-full"
+                            inputmode="email"
                         />
                         <InputError :message="addTeamMemberForm.errors.email" class="mt-2" />
                     </div>
 
                     <!-- Role -->
                     <div v-if="availableRoles.length > 0" class="col-span-6 lg:col-span-4">
-                        <InputLabel for="roles" value="Role" />
+                        <InputLabel for="roles" :value="$t('teams.members.role')" />
                         <InputError :message="addTeamMemberForm.errors.role" class="mt-2" />
 
                         <div
@@ -195,14 +195,14 @@ const displayableRole = (role) => {
 
                 <template #actions>
                     <ActionMessage :on="addTeamMemberForm.recentlySuccessful" class="me-3">
-                        Added.
+                        {{ $t('teams.members.added') }}
                     </ActionMessage>
 
                     <PrimaryButton
                         :class="{ 'opacity-25': addTeamMemberForm.processing }"
                         :disabled="addTeamMemberForm.processing"
                     >
-                        Add
+                        {{ $t('common.add') }}
                     </PrimaryButton>
                 </template>
             </FormSection>
@@ -213,11 +213,10 @@ const displayableRole = (role) => {
 
             <!-- Team Member Invitations -->
             <ActionSection class="mt-10 sm:mt-0">
-                <template #title> Pending Team Invitations </template>
+                <template #title> {{ $t('teams.members.pending_title') }} </template>
 
                 <template #description>
-                    These people have been invited to your team and have been sent an invitation
-                    email. They may join the team by accepting the email invitation.
+                    {{ $t('teams.members.pending_description') }}
                 </template>
 
                 <!-- Pending Team Member Invitation List -->
@@ -228,7 +227,7 @@ const displayableRole = (role) => {
                             :key="invitation.id"
                             class="flex items-center justify-between"
                         >
-                            <div class="text-gray-600">
+                            <div class="text-[color:var(--ui-text-soft)]">
                                 {{ invitation.email }}
                             </div>
 
@@ -239,7 +238,7 @@ const displayableRole = (role) => {
                                     class="ms-6 cursor-pointer text-sm text-red-500 focus:outline-none"
                                     @click="cancelTeamInvitation(invitation)"
                                 >
-                                    Cancel
+                                    {{ $t('common.cancel') }}
                                 </button>
                             </div>
                         </div>
@@ -253,9 +252,9 @@ const displayableRole = (role) => {
 
             <!-- Manage Team Members -->
             <ActionSection class="mt-10 sm:mt-0">
-                <template #title> Team Members </template>
+                <template #title> {{ $t('teams.members.list_title') }} </template>
 
-                <template #description> All of the people that are part of this team. </template>
+                <template #description> {{ $t('teams.members.list_description') }} </template>
 
                 <!-- Team Member List -->
                 <template #content>
@@ -283,7 +282,7 @@ const displayableRole = (role) => {
                                         userPermissions.canUpdateTeamMembers &&
                                         availableRoles.length
                                     "
-                                    class="ms-2 text-sm text-gray-400 underline"
+                                    class="ms-2 text-sm text-[color:var(--ui-text-muted)] underline"
                                     @click="manageRole(user)"
                                 >
                                     {{ displayableRole(user.membership.role) }}
@@ -291,7 +290,7 @@ const displayableRole = (role) => {
 
                                 <div
                                     v-else-if="availableRoles.length"
-                                    class="ms-2 text-sm text-gray-400"
+                                    class="ms-2 text-sm text-[color:var(--ui-text-muted)]"
                                 >
                                     {{ displayableRole(user.membership.role) }}
                                 </div>
@@ -302,7 +301,7 @@ const displayableRole = (role) => {
                                     class="ms-6 cursor-pointer text-sm text-red-500"
                                     @click="confirmLeavingTeam"
                                 >
-                                    Leave
+                                    {{ $t('common.leave') }}
                                 </button>
 
                                 <!-- Remove Team Member -->
@@ -311,7 +310,7 @@ const displayableRole = (role) => {
                                     class="ms-6 cursor-pointer text-sm text-red-500"
                                     @click="confirmTeamMemberRemoval(user)"
                                 >
-                                    Remove
+                                    {{ $t('common.remove') }}
                                 </button>
                             </div>
                         </div>
@@ -322,7 +321,7 @@ const displayableRole = (role) => {
 
         <!-- Role Management Modal -->
         <DialogModal :show="currentlyManagingRole" @close="currentlyManagingRole = false">
-            <template #title> Manage Role </template>
+            <template #title> {{ $t('teams.members.manage_role_title') }} </template>
 
             <template #content>
                 <div v-if="managingRoleFor">
@@ -383,7 +382,9 @@ const displayableRole = (role) => {
             </template>
 
             <template #footer>
-                <SecondaryButton @click="currentlyManagingRole = false"> Cancel </SecondaryButton>
+                <SecondaryButton @click="currentlyManagingRole = false">{{
+                    $t('common.cancel')
+                }}</SecondaryButton>
 
                 <PrimaryButton
                     class="ms-3"
@@ -391,19 +392,21 @@ const displayableRole = (role) => {
                     :disabled="updateRoleForm.processing"
                     @click="updateRole"
                 >
-                    Save
+                    {{ $t('common.save') }}
                 </PrimaryButton>
             </template>
         </DialogModal>
 
         <!-- Leave Team Confirmation Modal -->
         <ConfirmationModal :show="confirmingLeavingTeam" @close="confirmingLeavingTeam = false">
-            <template #title> Leave Team </template>
+            <template #title> {{ $t('teams.members.leave_title') }} </template>
 
-            <template #content> Are you sure you would like to leave this team? </template>
+            <template #content> {{ $t('teams.members.leave_description') }} </template>
 
             <template #footer>
-                <SecondaryButton @click="confirmingLeavingTeam = false"> Cancel </SecondaryButton>
+                <SecondaryButton @click="confirmingLeavingTeam = false">{{
+                    $t('common.cancel')
+                }}</SecondaryButton>
 
                 <DangerButton
                     class="ms-3"
@@ -411,21 +414,23 @@ const displayableRole = (role) => {
                     :disabled="leaveTeamForm.processing"
                     @click="leaveTeam"
                 >
-                    Leave
+                    {{ $t('common.leave') }}
                 </DangerButton>
             </template>
         </ConfirmationModal>
 
         <!-- Remove Team Member Confirmation Modal -->
         <ConfirmationModal :show="teamMemberBeingRemoved" @close="teamMemberBeingRemoved = null">
-            <template #title> Remove Team Member </template>
+            <template #title> {{ $t('teams.members.remove_title') }} </template>
 
             <template #content>
-                Are you sure you would like to remove this person from the team?
+                {{ $t('teams.members.remove_description') }}
             </template>
 
             <template #footer>
-                <SecondaryButton @click="teamMemberBeingRemoved = null"> Cancel </SecondaryButton>
+                <SecondaryButton @click="teamMemberBeingRemoved = null">{{
+                    $t('common.cancel')
+                }}</SecondaryButton>
 
                 <DangerButton
                     class="ms-3"
@@ -433,7 +438,7 @@ const displayableRole = (role) => {
                     :disabled="removeTeamMemberForm.processing"
                     @click="removeTeamMember"
                 >
-                    Remove
+                    {{ $t('common.remove') }}
                 </DangerButton>
             </template>
         </ConfirmationModal>

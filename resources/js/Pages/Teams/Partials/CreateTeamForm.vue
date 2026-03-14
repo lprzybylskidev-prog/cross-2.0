@@ -20,15 +20,15 @@ const createTeam = () => {
 
 <template>
     <FormSection @submitted="createTeam">
-        <template #title> Team Details </template>
+        <template #title> {{ $t('teams.create.details_title') }} </template>
 
         <template #description>
-            Create a new team to collaborate with others on projects.
+            {{ $t('teams.create.details_description') }}
         </template>
 
         <template #form>
             <div class="col-span-6">
-                <InputLabel value="Team Owner" />
+                <InputLabel :value="$t('teams.common.owner')" />
 
                 <div class="mt-2 flex items-center">
                     <img
@@ -38,8 +38,10 @@ const createTeam = () => {
                     />
 
                     <div class="ms-4 leading-tight">
-                        <div class="text-gray-900">{{ $page.props.auth.user.name }}</div>
-                        <div class="text-sm text-gray-700">
+                        <div class="text-[color:var(--ui-text)]">
+                            {{ $page.props.auth.user.name }}
+                        </div>
+                        <div class="text-sm text-[color:var(--ui-text-muted)]">
                             {{ $page.props.auth.user.email }}
                         </div>
                     </div>
@@ -47,7 +49,7 @@ const createTeam = () => {
             </div>
 
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="name" value="Team Name" />
+                <InputLabel for="name" :value="$t('teams.common.name')" />
                 <TextInput
                     id="name"
                     v-model="form.name"
@@ -61,7 +63,7 @@ const createTeam = () => {
 
         <template #actions>
             <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                Create
+                {{ $t('common.create') }}
             </PrimaryButton>
         </template>
     </FormSection>

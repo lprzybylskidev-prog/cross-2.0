@@ -3,10 +3,12 @@
 declare(strict_types=1);
 
 use App\Models\User;
+use Cross\Domain\Security\Permissions\SystemPermission;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 use Laravel\Fortify\Features;
+use Spatie\Permission\Models\Permission;
 
 test('email verification screen can be rendered', function () {
     $user = User::factory()
@@ -28,6 +30,8 @@ test('email can be verified', function () {
     $user = User::factory()->create([
         'email_verified_at' => null,
     ]);
+    Permission::findOrCreate(SystemPermission::DebtorsView->value, 'web');
+    $user->givePermissionTo(SystemPermission::DebtorsView->value);
 
     $verificationUrl = URL::temporarySignedRoute('verification.verify', now()->addMinutes(60), [
         'id' => $user->id,
@@ -39,7 +43,7 @@ test('email can be verified', function () {
     Event::assertDispatched(Verified::class);
 
     expect($user->fresh()->hasVerifiedEmail())->toBeTrue();
-    $response->assertRedirect(route('home.view', absolute: false) . '?verified=1');
+    $response->assertRedirect(route('debtors.view', absolute: false) . '?verified=1');
 })->skip(function () {
     return !Features::enabled(Features::emailVerification());
 }, 'Email verification not enabled.');

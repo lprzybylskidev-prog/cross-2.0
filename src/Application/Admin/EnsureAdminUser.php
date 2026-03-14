@@ -18,7 +18,8 @@ final readonly class EnsureAdminUser
     public function handle(AdminUserData $adminUserData): User
     {
         Permission::findOrCreate(SystemPermission::Admin->value);
-        Permission::findOrCreate(SystemPermission::HomeView->value);
+        Permission::findOrCreate(SystemPermission::DebtorsView->value);
+        Permission::findOrCreate(SystemPermission::PreferencesUpdate->value);
 
         /** @var User $user */
         $user = User::query()->firstOrNew(['email' => $adminUserData->email->value]);
@@ -38,7 +39,11 @@ final readonly class EnsureAdminUser
             $user->forceFill(['current_team_id' => $team->id])->save();
         }
 
-        $user->syncPermissions([SystemPermission::Admin->value, SystemPermission::HomeView->value]);
+        $user->syncPermissions([
+            SystemPermission::Admin->value,
+            SystemPermission::DebtorsView->value,
+            SystemPermission::PreferencesUpdate->value,
+        ]);
 
         return $user;
     }

@@ -6,11 +6,15 @@ namespace App\Actions\Fortify;
 
 use App\Models\Team;
 use App\Models\User;
+use Cross\Domain\Localization\SystemLocale;
+use Cross\Domain\Security\Permissions\SystemPermission;
+use Cross\Domain\Users\Preferences\UserTheme;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
+use Spatie\Permission\Models\Permission;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -36,8 +40,16 @@ class CreateNewUser implements CreatesNewUsers
                     'name' => $input['name'],
                     'email' => $input['email'],
                     'password' => Hash::make($input['password']),
+                    'preferred_locale' => SystemLocale::default()->value,
+                    'preferred_theme' => UserTheme::default()->value,
                 ]),
                 function (User $user) {
+                    Permission::findOrCreate(SystemPermission::DebtorsView->value);
+                    Permission::findOrCreate(SystemPermission::PreferencesUpdate->value);
+                    $user->givePermissionTo([
+                        SystemPermission::DebtorsView->value,
+                        SystemPermission::PreferencesUpdate->value,
+                    ]);
                     $this->createTeam($user);
                 },
             );

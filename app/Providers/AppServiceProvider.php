@@ -23,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        require base_path('routes/breadcrumbs.php');
+
         Gate::before(static function ($user): ?bool {
             if (!method_exists($user, 'getAllPermissions')) {
                 return null;

@@ -1,11 +1,11 @@
 <script setup>
 import { Head, useForm } from '@inertiajs/vue3';
-import AuthenticationCard from '@/Components/AuthenticationCard.vue';
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
+import AuthLayout from '@/Layouts/AuthLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import { useTranslations } from '@/Composables/useTranslations';
 
 defineProps({
     status: String,
@@ -15,51 +15,54 @@ const form = useForm({
     email: '',
 });
 
+const { t } = useTranslations();
+
 const submit = () => {
     form.post(route('password.email'));
 };
 </script>
 
 <template>
-    <Head title="Forgot Password" />
+    <Head :title="t('auth.forgot_password.title')" />
 
-    <AuthenticationCard>
-        <template #logo>
-            <AuthenticationCardLogo />
-        </template>
-
-        <div class="mb-4 text-sm text-gray-600">
-            Forgot your password? No problem. Just let us know your email address and we will email
-            you a password reset link that will allow you to choose a new one.
+    <AuthLayout
+        :title="t('auth.forgot_password.title')"
+        :description="t('auth.forgot_password.description')"
+    >
+        <div class="mb-4 text-sm text-[color:var(--ui-text-soft)]">
+            {{ t('auth.forgot_password.helper') }}
         </div>
 
-        <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
+        <div
+            v-if="status"
+            class="mb-4 rounded-2xl border border-emerald-400/20 bg-emerald-500/10 px-4 py-3 text-sm font-medium text-emerald-300"
+        >
             {{ status }}
         </div>
 
-        <form @submit.prevent="submit">
+        <form class="space-y-4" novalidate @submit.prevent="submit">
             <div>
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email" :value="t('common.email')" />
                 <TextInput
                     id="email"
                     v-model="form.email"
-                    type="email"
+                    type="text"
                     class="mt-1 block w-full"
-                    required
                     autofocus
                     autocomplete="username"
+                    inputmode="email"
                 />
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
-            <div class="mt-4 flex items-center justify-end">
+            <div class="flex justify-end">
                 <PrimaryButton
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
-                    Email Password Reset Link
+                    {{ t('auth.forgot_password.submit') }}
                 </PrimaryButton>
             </div>
         </form>
-    </AuthenticationCard>
+    </AuthLayout>
 </template>

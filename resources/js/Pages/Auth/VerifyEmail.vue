@@ -1,9 +1,9 @@
 <script setup>
 import { computed } from 'vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
-import AuthenticationCard from '@/Components/AuthenticationCard.vue';
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
+import AuthLayout from '@/Layouts/AuthLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import { useTranslations } from '@/Composables/useTranslations';
 
 const props = defineProps({
     status: String,
@@ -16,53 +16,54 @@ const submit = () => {
 };
 
 const verificationLinkSent = computed(() => props.status === 'verification-link-sent');
+const { t } = useTranslations();
 </script>
 
 <template>
-    <Head title="Email Verification" />
+    <Head :title="t('auth.verify_email.title')" />
 
-    <AuthenticationCard>
-        <template #logo>
-            <AuthenticationCardLogo />
-        </template>
-
-        <div class="mb-4 text-sm text-gray-600">
-            Before continuing, could you verify your email address by clicking on the link we just
-            emailed to you? If you didn't receive the email, we will gladly send you another.
+    <AuthLayout
+        :title="t('auth.verify_email.title')"
+        :description="t('auth.verify_email.description')"
+    >
+        <div class="mb-4 text-sm text-[color:var(--ui-text-soft)]">
+            {{ t('auth.verify_email.helper') }}
         </div>
 
-        <div v-if="verificationLinkSent" class="mb-4 text-sm font-medium text-green-600">
-            A new verification link has been sent to the email address you provided in your profile
-            settings.
+        <div
+            v-if="verificationLinkSent"
+            class="mb-4 rounded-2xl border border-emerald-400/20 bg-emerald-500/10 px-4 py-3 text-sm font-medium text-emerald-300"
+        >
+            {{ t('auth.verify_email.resent') }}
         </div>
 
-        <form @submit.prevent="submit">
-            <div class="mt-4 flex items-center justify-between">
+        <form novalidate @submit.prevent="submit">
+            <div class="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <PrimaryButton
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
-                    Resend Verification Email
+                    {{ t('auth.verify_email.submit') }}
                 </PrimaryButton>
 
-                <div>
+                <div class="flex flex-wrap items-center gap-4 text-sm">
                     <Link
                         :href="route('profile.show')"
-                        class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        class="font-medium text-[color:var(--ui-accent-strong)] transition hover:text-[color:var(--ui-accent)]"
                     >
-                        Edit Profile</Link
+                        {{ t('auth.verify_email.edit_profile') }}</Link
                     >
 
                     <Link
                         :href="route('logout')"
                         method="post"
                         as="button"
-                        class="ms-2 rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        class="font-medium text-[color:var(--ui-accent-strong)] transition hover:text-[color:var(--ui-accent)]"
                     >
-                        Log Out
+                        {{ t('nav.logout') }}
                     </Link>
                 </div>
             </div>
         </form>
-    </AuthenticationCard>
+    </AuthLayout>
 </template>

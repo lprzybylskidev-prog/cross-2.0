@@ -1,12 +1,14 @@
 <script setup>
 import { Head, Link, useForm } from '@inertiajs/vue3';
-import AuthenticationCard from '@/Components/AuthenticationCard.vue';
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
+import AuthLayout from '@/Layouts/AuthLayout.vue';
 import Checkbox from '@/Components/Checkbox.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import { useTranslations } from '@/Composables/useTranslations';
+
+const { t } = useTranslations();
 
 const form = useForm({
     name: '',
@@ -24,22 +26,17 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Register" />
+    <Head :title="t('auth.register.title')" />
 
-    <AuthenticationCard>
-        <template #logo>
-            <AuthenticationCardLogo />
-        </template>
-
-        <form @submit.prevent="submit">
+    <AuthLayout :title="t('auth.register.title')" :description="t('auth.register.description')">
+        <form class="space-y-4" novalidate @submit.prevent="submit">
             <div>
-                <InputLabel for="name" value="Name" />
+                <InputLabel for="name" :value="t('common.name')" />
                 <TextInput
                     id="name"
                     v-model="form.name"
                     type="text"
                     class="mt-1 block w-full"
-                    required
                     autofocus
                     autocomplete="name"
                 />
@@ -47,39 +44,40 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email" :value="t('common.email')" />
                 <TextInput
                     id="email"
                     v-model="form.email"
-                    type="email"
+                    type="text"
                     class="mt-1 block w-full"
-                    required
                     autocomplete="username"
+                    inputmode="email"
                 />
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                <InputLabel for="password" :value="t('common.password')" />
                 <TextInput
                     id="password"
                     v-model="form.password"
                     type="password"
                     class="mt-1 block w-full"
-                    required
                     autocomplete="new-password"
                 />
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
+                <InputLabel
+                    for="password_confirmation"
+                    :value="t('auth.register.password_confirmation')"
+                />
                 <TextInput
                     id="password_confirmation"
                     v-model="form.password_confirmation"
                     type="password"
                     class="mt-1 block w-full"
-                    required
                     autocomplete="new-password"
                 />
                 <InputError class="mt-2" :message="form.errors.password_confirmation" />
@@ -87,23 +85,23 @@ const submit = () => {
 
             <div v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature" class="mt-4">
                 <InputLabel for="terms">
-                    <div class="flex items-center">
-                        <Checkbox id="terms" v-model:checked="form.terms" name="terms" required />
+                    <div class="flex items-center text-sm text-[color:var(--ui-text-soft)]">
+                        <Checkbox id="terms" v-model:checked="form.terms" name="terms" />
 
                         <div class="ms-2">
-                            I agree to the
+                            {{ t('auth.register.terms_prefix') }}
                             <a
                                 target="_blank"
                                 :href="route('terms.show')"
-                                class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                                >Terms of Service</a
+                                class="font-medium text-[color:var(--ui-accent-strong)] transition hover:text-[color:var(--ui-accent)]"
+                                >{{ t('legal.terms.title') }}</a
                             >
-                            and
+                            {{ ` ${t('common.and')} ` }}
                             <a
                                 target="_blank"
                                 :href="route('policy.show')"
-                                class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                                >Privacy Policy</a
+                                class="font-medium text-[color:var(--ui-accent-strong)] transition hover:text-[color:var(--ui-accent)]"
+                                >{{ t('legal.privacy.title') }}</a
                             >
                         </div>
                     </div>
@@ -111,22 +109,22 @@ const submit = () => {
                 </InputLabel>
             </div>
 
-            <div class="mt-4 flex items-center justify-end">
+            <div class="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <Link
                     :href="route('login')"
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    class="text-sm font-medium text-[color:var(--ui-accent-strong)] transition hover:text-[color:var(--ui-accent)]"
                 >
-                    Already registered?
+                    {{ t('auth.register.login_link') }}
                 </Link>
 
                 <PrimaryButton
-                    class="ms-4"
+                    class="w-full sm:w-auto"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
-                    Register
+                    {{ t('auth.register.submit') }}
                 </PrimaryButton>
             </div>
         </form>
-    </AuthenticationCard>
+    </AuthLayout>
 </template>

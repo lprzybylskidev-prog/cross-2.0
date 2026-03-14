@@ -13,6 +13,7 @@ final class PermissionSeeder extends Seeder
     public function run(): void
     {
         Permission::findOrCreate(SystemPermission::Admin->value);
-        Permission::findOrCreate(SystemPermission::HomeView->value);
+        Permission::findOrCreate(SystemPermission::DebtorsView->value);
+        Permission::findOrCreate(SystemPermission::PreferencesUpdate->value);
     }
 }

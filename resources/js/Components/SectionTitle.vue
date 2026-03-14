@@ -1,16 +1,16 @@
 <template>
-    <div class="flex justify-between md:col-span-1">
-        <div class="px-4 sm:px-0">
-            <h3 class="text-lg font-medium text-gray-900">
+    <div class="flex flex-col justify-between gap-4">
+        <div>
+            <h3 class="text-lg font-semibold text-[color:var(--ui-text)]">
                 <slot name="title" />
             </h3>
 
-            <p class="mt-1 text-sm text-gray-600">
+            <p class="mt-2 text-sm leading-6 text-[color:var(--ui-text-soft)]">
                 <slot name="description" />
             </p>
         </div>
 
-        <div class="px-4 sm:px-0">
+        <div>
             <slot name="aside" />
         </div>
     </div>

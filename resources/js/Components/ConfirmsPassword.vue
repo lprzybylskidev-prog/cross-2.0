@@ -11,15 +11,15 @@ const emit = defineEmits(['confirmed']);
 defineProps({
     title: {
         type: String,
-        default: 'Confirm Password',
+        default: '',
     },
     content: {
         type: String,
-        default: 'For your security, please confirm your password to continue.',
+        default: '',
     },
     button: {
         type: String,
-        default: 'Confirm',
+        default: '',
     },
 });
 
@@ -80,11 +80,11 @@ const closeModal = () => {
 
         <DialogModal :show="confirmingPassword" @close="closeModal">
             <template #title>
-                {{ title }}
+                {{ title || $t('auth.confirm_password.title') }}
             </template>
 
             <template #content>
-                {{ content }}
+                {{ content || $t('auth.confirm_password.helper') }}
 
                 <div class="mt-4">
                     <TextInput
@@ -92,7 +92,7 @@ const closeModal = () => {
                         v-model="form.password"
                         type="password"
                         class="mt-1 block w-3/4"
-                        placeholder="Password"
+                        :placeholder="$t('common.password')"
                         autocomplete="current-password"
                         @keyup.enter="confirmPassword"
                     />
@@ -102,7 +102,7 @@ const closeModal = () => {
             </template>
 
             <template #footer>
-                <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
+                <SecondaryButton @click="closeModal">{{ $t('common.cancel') }}</SecondaryButton>
 
                 <PrimaryButton
                     class="ms-3"
@@ -110,7 +110,7 @@ const closeModal = () => {
                     :disabled="form.processing"
                     @click="confirmPassword"
                 >
-                    {{ button }}
+                    {{ button || $t('common.confirm') }}
                 </PrimaryButton>
             </template>
         </DialogModal>

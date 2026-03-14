@@ -26,14 +26,14 @@ const updateTeamName = () => {
 
 <template>
     <FormSection @submitted="updateTeamName">
-        <template #title> Team Name </template>
+        <template #title> {{ $t('teams.settings.name_title') }} </template>
 
-        <template #description> The team's name and owner information. </template>
+        <template #description> {{ $t('teams.settings.name_description') }} </template>
 
         <template #form>
             <!-- Team Owner Information -->
             <div class="col-span-6">
-                <InputLabel value="Team Owner" />
+                <InputLabel :value="$t('teams.common.owner')" />
 
                 <div class="mt-2 flex items-center">
                     <img
@@ -43,8 +43,8 @@ const updateTeamName = () => {
                     />
 
                     <div class="ms-4 leading-tight">
-                        <div class="text-gray-900">{{ team.owner.name }}</div>
-                        <div class="text-sm text-gray-700">
+                        <div class="text-[color:var(--ui-text)]">{{ team.owner.name }}</div>
+                        <div class="text-sm text-[color:var(--ui-text-muted)]">
                             {{ team.owner.email }}
                         </div>
                     </div>
@@ -53,7 +53,7 @@ const updateTeamName = () => {
 
             <!-- Team Name -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="name" value="Team Name" />
+                <InputLabel for="name" :value="$t('teams.common.name')" />
 
                 <TextInput
                     id="name"
@@ -68,10 +68,12 @@ const updateTeamName = () => {
         </template>
 
         <template v-if="permissions.canUpdateTeam" #actions>
-            <ActionMessage :on="form.recentlySuccessful" class="me-3"> Saved. </ActionMessage>
+            <ActionMessage :on="form.recentlySuccessful" class="me-3">
+                {{ $t('common.saved') }}
+            </ActionMessage>
 
             <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                Save
+                {{ $t('common.save') }}
             </PrimaryButton>
         </template>
     </FormSection>

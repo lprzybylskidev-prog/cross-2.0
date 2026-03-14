@@ -18,6 +18,27 @@ if [[ ! -d node_modules ]]; then
 fi
 
 echo "[format] Running Prettier..."
-npx prettier --write .
+npx prettier --write --ignore-unknown \
+  app \
+  bootstrap \
+  config \
+  database \
+  docs \
+  lang \
+  resources \
+  routes \
+  scripts \
+  src \
+  tests \
+  .env.example \
+  README.md \
+  composer.json \
+  package.json \
+  vite.config.js \
+  vitest.config.ts \
+  playwright.config.ts \
+  phpstan.neon.dist \
+  .prettierrc.json \
+  .prettierignore
 
 echo "[format] Completed successfully."

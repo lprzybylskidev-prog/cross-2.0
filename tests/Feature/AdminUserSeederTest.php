@@ -14,5 +14,5 @@ it('creates admin user with admin permission', function (): void {
 
     expect($admin->name)->toBe('Cross Admin');
     expect($admin->can(SystemPermission::Admin->value))->toBeTrue();
-    expect($admin->can(SystemPermission::HomeView->value))->toBeTrue();
+    expect($admin->can(SystemPermission::DebtorsView->value))->toBeTrue();
 });

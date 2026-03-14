@@ -26,19 +26,19 @@ const deleteTeam = () => {
 
 <template>
     <ActionSection>
-        <template #title> Delete Team </template>
+        <template #title> {{ $t('teams.delete.title') }} </template>
 
-        <template #description> Permanently delete this team. </template>
+        <template #description> {{ $t('teams.delete.description') }} </template>
 
         <template #content>
-            <div class="max-w-xl text-sm text-gray-600">
-                Once a team is deleted, all of its resources and data will be permanently deleted.
-                Before deleting this team, please download any data or information regarding this
-                team that you wish to retain.
+            <div class="max-w-xl text-sm text-[color:var(--ui-text-soft)]">
+                {{ $t('teams.delete.helper') }}
             </div>
 
             <div class="mt-5">
-                <DangerButton @click="confirmTeamDeletion"> Delete Team </DangerButton>
+                <DangerButton @click="confirmTeamDeletion">{{
+                    $t('teams.delete.submit')
+                }}</DangerButton>
             </div>
 
             <!-- Delete Team Confirmation Modal -->
@@ -46,16 +46,15 @@ const deleteTeam = () => {
                 :show="confirmingTeamDeletion"
                 @close="confirmingTeamDeletion = false"
             >
-                <template #title> Delete Team </template>
+                <template #title> {{ $t('teams.delete.modal_title') }} </template>
 
                 <template #content>
-                    Are you sure you want to delete this team? Once a team is deleted, all of its
-                    resources and data will be permanently deleted.
+                    {{ $t('teams.delete.modal_description') }}
                 </template>
 
                 <template #footer>
                     <SecondaryButton @click="confirmingTeamDeletion = false">
-                        Cancel
+                        {{ $t('common.cancel') }}
                     </SecondaryButton>
 
                     <DangerButton
@@ -64,7 +63,7 @@ const deleteTeam = () => {
                         :disabled="form.processing"
                         @click="deleteTeam"
                     >
-                        Delete Team
+                        {{ $t('teams.delete.submit') }}
                     </DangerButton>
                 </template>
             </ConfirmationModal>

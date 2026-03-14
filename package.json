@@ -4,8 +4,8 @@
     "version": "1.0.0",
     "description": "Laravel app with devcontainer tooling for cross project",
     "scripts": {
-        "format": "prettier --write .",
-        "format:check": "prettier --check .",
+        "format": "bash scripts/format.sh",
+        "format:check": "npx prettier --check --ignore-unknown app bootstrap config database docs lang resources routes scripts src tests .env.example README.md composer.json package.json vite.config.js vitest.config.ts playwright.config.ts phpstan.neon.dist .prettierrc.json .prettierignore",
         "test": "npm run test:unit",
         "test:unit": "vitest run",
         "test:unit:watch": "vitest",
@@ -23,6 +23,7 @@
         "@tailwindcss/vite": "^4.2.1",
         "@vitejs/plugin-vue": "^6.0.4",
         "@vitest/coverage-v8": "^4.1.0",
+        "@vue/test-utils": "^2.4.6",
         "autoprefixer": "^10.4.16",
         "axios": "^1.13.6",
         "concurrently": "^9.2.1",
@@ -37,5 +38,9 @@
         "vitest": "^4.1.0",
         "vue": "^3.3.13"
     },
-    "type": "module"
+    "type": "module",
+    "dependencies": {
+        "@tabler/icons-vue": "^3.40.0",
+        "flag-icons": "^7.5.0"
+    }
 }
