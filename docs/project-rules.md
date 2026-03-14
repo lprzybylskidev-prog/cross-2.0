@@ -27,6 +27,8 @@ Technology stack:
 - Prefer clarity, explicitness, and consistency over shortcuts.
 - Unused code, files, translations, assets, and legacy scaffolding must be removed as part of the current change instead of being left in the repository.
 - Generated public assets (for example Filament assets published to `public/`) must remain generated artifacts: they must not be manually edited, prettified, or reformatted, and if they are committed they should stay in their published minified form.
+- Contributors must actively look for duplicated database queries and eliminate them when they appear.
+- Database queries must be analyzed for performance impact, and appropriate database indexes must be added whenever query patterns require them.
 
 ## 3. PHP Standards
 
@@ -194,6 +196,9 @@ If implementation constraints force an exception, the exception must be:
 - If tests, analysis, or checks fail, the contributor must fix the code and update documentation in `docs` when required before proceeding.
 - After the project is in a valid state, contributors must run `bash scripts/format.sh`.
 - The required order is: tests, fixes, documentation updates if needed, formatting, `commit`, `push`.
+- During active development, until the rules explicitly state that this phase has ended, contributors must not create separate follow-up migrations for schema adjustments to tables that already exist.
+- During this active development phase, existing migrations must be edited in place so that one database table remains defined by one migration file.
+- Additional incremental migrations for existing tables are allowed only after the project enters the post-development or production-change phase and the rules explicitly permit standard migration flow.
 - Commit messages must use a Conventional Commits style.
 - Every commit must start with a type such as `feat:`, `fix:`, `refactor:`, `docs:`, `test:`, or `chore:`.
 - Scoped variants such as `feat(scope): short description` or `fix(scope): short description` should be used when the scope makes the change clearer.
