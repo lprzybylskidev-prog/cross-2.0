@@ -194,6 +194,11 @@ If implementation constraints force an exception, the exception must be:
 - If tests, analysis, or checks fail, the contributor must fix the code and update documentation in `docs` when required before proceeding.
 - After the project is in a valid state, contributors must run `bash scripts/format.sh`.
 - The required order is: tests, fixes, documentation updates if needed, formatting, `commit`, `push`.
+- Commit messages must use a Conventional Commits style.
+- Every commit must start with a type such as `feat:`, `fix:`, `refactor:`, `docs:`, `test:`, or `chore:`.
+- Scoped variants such as `feat(scope): short description` or `fix(scope): short description` should be used when the scope makes the change clearer.
+- Commit descriptions must be concise, lowercase, and written in English.
+- Generic commit messages such as `update`, `changes`, `fix stuff`, or `work in progress` are not allowed.
 
 ## 14. Framework Compatibility Rule
 
