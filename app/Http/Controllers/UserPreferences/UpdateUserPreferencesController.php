@@ -26,6 +26,7 @@ final class UpdateUserPreferencesController extends Controller
         );
 
         $updateUserPreferences->handle($request->user(), $preferencesData);
+        app()->setLocale($preferencesData->locale->value);
 
         return back()
             ->withCookie(
