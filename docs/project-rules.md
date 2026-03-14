@@ -26,6 +26,8 @@ Technology stack:
 - Implementations should be production-ready and not require immediate refactoring.
 - Prefer clarity, explicitness, and consistency over shortcuts.
 - Unused code, files, translations, assets, and legacy scaffolding must be removed as part of the current change instead of being left in the repository.
+- Empty directories that exist only as leftovers after removed features, modules, pages, or controllers must be deleted as part of the same change.
+- Empty directories that intentionally preserve the current Laravel, MVC, or DDD project structure may remain when they represent a valid architectural placeholder.
 - Generated public assets (for example Filament assets published to `public/`) must remain generated artifacts: they must not be manually edited, prettified, or reformatted, and if they are committed they should stay in their published minified form.
 - Contributors must actively look for duplicated database queries and eliminate them when they appear.
 - Database queries must be analyzed for performance impact, and appropriate database indexes must be added whenever query patterns require them.
