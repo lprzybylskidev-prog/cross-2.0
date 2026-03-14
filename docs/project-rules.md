@@ -164,7 +164,13 @@ Recommended test distribution:
 - API and workflow behavior: integration/feature tests,
 - frontend behavior: component/unit tests (and E2E when needed).
 
-## 10. Documentation Policy
+## 10. AI Collaboration Rules
+
+- AI agents must read `docs/project-rules.md` before generating or modifying code.
+- `docs/project-rules.md` is the main and authoritative rule source for AI assistants working in this repository.
+- Agent-specific instruction files should point back to `docs/project-rules.md` as the primary project rule document.
+
+## 11. Documentation Policy
 
 - Every significant system element must be documented in the `docs` directory.
 - Every new documentation file must be linked from `README.md`.
@@ -173,7 +179,7 @@ Recommended test distribution:
 - If a component or behavior no longer exists in the codebase, references to it must be removed from documentation instead of being described historically.
 - Changes explicitly marked by the user as temporary, test-only, or short-lived visual experiments do not require dedicated documentation files or README updates when they are intended for near-term removal.
 
-## 11. Compliance
+## 12. Compliance
 
 These rules are mandatory for all contributors and all modules.  
 If implementation constraints force an exception, the exception must be:
@@ -182,14 +188,14 @@ If implementation constraints force an exception, the exception must be:
 - justified,
 - approved before merge.
 
-## 12. Pre-Commit and Pre-Push Workflow
+## 13. Pre-Commit and Pre-Push Workflow
 
 - Before every `commit` and `push`, contributors must run `bash scripts/test.sh`.
 - If tests, analysis, or checks fail, the contributor must fix the code and update documentation in `docs` when required before proceeding.
 - After the project is in a valid state, contributors must run `bash scripts/format.sh`.
 - The required order is: tests, fixes, documentation updates if needed, formatting, `commit`, `push`.
 
-## 13. Framework Compatibility Rule
+## 14. Framework Compatibility Rule
 
 - Type strictness is mandatory, but framework contracts always take precedence.
 - When extending Laravel or third-party framework classes, child method signatures and property declarations must remain fully compatible with parent contracts.
