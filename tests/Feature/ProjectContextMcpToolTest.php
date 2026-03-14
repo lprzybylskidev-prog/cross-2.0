@@ -18,8 +18,10 @@ it('returns project context for ai agents', function (): void {
     $response = $tool->handle(new Request());
     $payload = json_decode((string) $response->content(), true, 512, JSON_THROW_ON_ERROR);
 
-    expect($response->isError())->toBeFalse()
-        ->and($payload)->toHaveKeys([
+    expect($response->isError())
+        ->toBeFalse()
+        ->and($payload)
+        ->toHaveKeys([
             'routes',
             'configuration_files',
             'models',
@@ -28,13 +30,14 @@ it('returns project context for ai agents', function (): void {
             'database',
             'logs',
         ])
-        ->and($payload['configuration_files'])->toContain('config/app.php')
-        ->and($payload['artisan_commands'])->not->toBeEmpty()
-        ->and($payload['routes'])->not->toBeEmpty()
-        ->and($payload['database']['schema_tool'])->toBe('DatabaseSchema')
-        ->and($payload['logs']['tools'])->toBe([
-            'ReadLogEntries',
-            'LastError',
-            'BrowserLogs',
-        ]);
+        ->and($payload['configuration_files'])
+        ->toContain('config/app.php')
+        ->and($payload['artisan_commands'])
+        ->not->toBeEmpty()
+        ->and($payload['routes'])
+        ->not->toBeEmpty()
+        ->and($payload['database']['schema_tool'])
+        ->toBe('DatabaseSchema')
+        ->and($payload['logs']['tools'])
+        ->toBe(['ReadLogEntries', 'LastError', 'BrowserLogs']);
 });

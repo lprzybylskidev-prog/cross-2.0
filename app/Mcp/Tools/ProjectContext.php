@@ -16,9 +16,7 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 #[IsReadOnly]
 class ProjectContext extends Tool
 {
-    public function __construct(private readonly GuidelineAssist $guidelineAssist)
-    {
-    }
+    public function __construct(private readonly GuidelineAssist $guidelineAssist) {}
 
     protected string $description = 'Get project context tailored for AI agents, including application routes, configuration files, Eloquent models, Artisan commands, environment summary, and the Boost tools used for schema and log inspection.';
 
@@ -40,11 +38,7 @@ class ProjectContext extends Tool
                 'default_channel' => config('logging.default'),
                 'application_log_path' => storage_path('logs/laravel.log'),
                 'browser_log_path' => storage_path('logs/browser.log'),
-                'tools' => [
-                    'ReadLogEntries',
-                    'LastError',
-                    'BrowserLogs',
-                ],
+                'tools' => ['ReadLogEntries', 'LastError', 'BrowserLogs'],
             ],
         ]);
     }
@@ -55,16 +49,15 @@ class ProjectContext extends Tool
     private function routes(): array
     {
         return collect(Route::getRoutes()->getRoutes())
-            ->map(fn ($route): array => [
-                'methods' => array_values(array_diff($route->methods(), ['HEAD'])),
-                'uri' => $route->uri(),
-                'name' => $route->getName(),
-                'middleware' => $route->gatherMiddleware(),
-            ])
-            ->sortBy([
-                ['uri', 'asc'],
-                ['name', 'asc'],
-            ])
+            ->map(
+                fn($route): array => [
+                    'methods' => array_values(array_diff($route->methods(), ['HEAD'])),
+                    'uri' => $route->uri(),
+                    'name' => $route->getName(),
+                    'middleware' => $route->gatherMiddleware(),
+                ],
+            )
+            ->sortBy([['uri', 'asc'], ['name', 'asc']])
             ->values()
             ->all();
     }
@@ -75,7 +68,13 @@ class ProjectContext extends Tool
     private function configurationFiles(): array
     {
         return collect(glob(config_path('*.php')) ?: [])
-            ->map(fn (string $path): string => str_replace(base_path().DIRECTORY_SEPARATOR, '', $path))
+            ->map(
+                fn(string $path): string => str_replace(
+                    base_path() . DIRECTORY_SEPARATOR,
+                    '',
+                    $path,
+                ),
+            )
             ->sort()
             ->values()
             ->all();
@@ -87,10 +86,12 @@ class ProjectContext extends Tool
     private function artisanCommands(): array
     {
         return collect(Artisan::all())
-            ->map(fn (SymfonyCommand $command, string $name): array => [
-                'name' => $name,
-                'description' => $command->getDescription() ?: null,
-            ])
+            ->map(
+                fn(SymfonyCommand $command, string $name): array => [
+                    'name' => $name,
+                    'description' => $command->getDescription() ?: null,
+                ],
+            )
             ->sortBy('name')
             ->values()
             ->all();

@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Boost Master Switch
@@ -51,10 +50,7 @@ return [
 
     'mcp' => [
         'tools' => [
-            'include' => [
-                App\Mcp\Tools\ProjectContext::class,
-            ],
+            'include' => [App\Mcp\Tools\ProjectContext::class],
         ],
     ],
-
 ];

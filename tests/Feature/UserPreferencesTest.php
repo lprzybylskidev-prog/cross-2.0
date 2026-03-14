@@ -42,8 +42,10 @@ it('updates guest preferences and persists them in cookies', function (): void {
 });
 
 it('translates guest preference flash messages using the newly selected locale', function (): void {
-    $response = $this
-        ->withCookie(SetApplicationPreferences::LOCALE_COOKIE, SystemLocale::English->value)
+    $response = $this->withCookie(
+        SetApplicationPreferences::LOCALE_COOKIE,
+        SystemLocale::English->value,
+    )
         ->from('/login')
         ->put(route('preferences.update'), [
             'locale' => SystemLocale::Polish->value,
@@ -99,25 +101,28 @@ it('updates authenticated user preferences and persists them in cookies', functi
         ->toBe(UserTheme::Light->value);
 });
 
-it('translates authenticated preference flash messages using the newly selected locale', function (): void {
-    $user = User::factory()->create([
-        'preferred_locale' => SystemLocale::English->value,
-    ]);
-
-    Permission::findOrCreate(SystemPermission::PreferencesUpdate->value, 'web');
-    $user->givePermissionTo(SystemPermission::PreferencesUpdate->value);
-
-    $response = $this->actingAs($user)
-        ->withCookie(SetApplicationPreferences::LOCALE_COOKIE, SystemLocale::English->value)
-        ->from('/')
-        ->put(route('preferences.update'), [
-            'locale' => SystemLocale::Polish->value,
-            'theme' => UserTheme::Light->value,
+it(
+    'translates authenticated preference flash messages using the newly selected locale',
+    function (): void {
+        $user = User::factory()->create([
+            'preferred_locale' => SystemLocale::English->value,
         ]);
 
-    $response->assertRedirect('/');
-    $response->assertSessionHas(
-        'flash.notification.message',
-        __('ui.flash.preferences_updated', locale: SystemLocale::Polish->value),
-    );
-});
+        Permission::findOrCreate(SystemPermission::PreferencesUpdate->value, 'web');
+        $user->givePermissionTo(SystemPermission::PreferencesUpdate->value);
+
+        $response = $this->actingAs($user)
+            ->withCookie(SetApplicationPreferences::LOCALE_COOKIE, SystemLocale::English->value)
+            ->from('/')
+            ->put(route('preferences.update'), [
+                'locale' => SystemLocale::Polish->value,
+                'theme' => UserTheme::Light->value,
+            ]);
+
+        $response->assertRedirect('/');
+        $response->assertSessionHas(
+            'flash.notification.message',
+            __('ui.flash.preferences_updated', locale: SystemLocale::Polish->value),
+        );
+    },
+);
