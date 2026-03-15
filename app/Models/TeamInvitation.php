@@ -6,9 +6,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Laravel\Jetstream\TeamInvitation as JetstreamTeamInvitation;
+use OwenIt\Auditing\Auditable as AuditableTrait;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class TeamInvitation extends JetstreamTeamInvitation
+class TeamInvitation extends JetstreamTeamInvitation implements Auditable
 {
+    use AuditableTrait;
+
     /**
      * The attributes that are mass assignable.
      *

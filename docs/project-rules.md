@@ -141,7 +141,13 @@ Rules:
 - a Team corresponds to an organizational department,
 - system data may be team-scoped when required by business rules.
 
-## 8. Navigation
+## 8. Auditing
+
+- The project uses `owen-it/laravel-auditing` to supervise model changes.
+- Every application Eloquent model must be auditable unless a documented exception is approved in advance.
+- Auditing must exclude secrets or sensitive credentials that must never be stored in audit payloads.
+
+## 9. Navigation
 
 - Every system page must provide breadcrumbs.
 - Authentication and account-access screens may intentionally omit breadcrumbs when they do not improve usability.
@@ -149,7 +155,7 @@ Rules:
 - The top application navigation must list links that belong to the currently opened module only.
 - Peripheral screens such as user profile or account utilities must not be treated as application modules in the main navigation.
 
-## 9. Testing Strategy
+## 10. Testing Strategy
 
 The project must maintain high test coverage.
 
@@ -168,13 +174,13 @@ Recommended test distribution:
 - API and workflow behavior: integration/feature tests,
 - frontend behavior: component/unit tests (and E2E when needed).
 
-## 10. AI Collaboration Rules
+## 11. AI Collaboration Rules
 
 - AI agents must read `docs/project-rules.md` before generating or modifying code.
 - `docs/project-rules.md` is the main and authoritative rule source for AI assistants working in this repository.
 - Agent-specific instruction files should point back to `docs/project-rules.md` as the primary project rule document.
 
-## 11. Documentation Policy
+## 12. Documentation Policy
 
 - Every significant system element must be documented in the `docs` directory.
 - Every new documentation file must be linked from `README.md`.
@@ -183,7 +189,7 @@ Recommended test distribution:
 - If a component or behavior no longer exists in the codebase, references to it must be removed from documentation instead of being described historically.
 - Changes explicitly marked by the user as temporary, test-only, or short-lived visual experiments do not require dedicated documentation files or README updates when they are intended for near-term removal.
 
-## 12. Compliance
+## 13. Compliance
 
 These rules are mandatory for all contributors and all modules.  
 If implementation constraints force an exception, the exception must be:
@@ -192,7 +198,7 @@ If implementation constraints force an exception, the exception must be:
 - justified,
 - approved before merge.
 
-## 13. Pre-Commit and Pre-Push Workflow
+## 14. Pre-Commit and Pre-Push Workflow
 
 - Before every `commit` and `push`, contributors must run `bash scripts/test.sh`.
 - If tests, analysis, or checks fail, the contributor must fix the code and update documentation in `docs` when required before proceeding.
@@ -210,7 +216,7 @@ If implementation constraints force an exception, the exception must be:
 - Contributors must not push commits automatically as part of implementation work; commits may be prepared locally and pushed only when explicitly requested or when the agreed workflow step is reached.
 - Generic commit messages such as `update`, `changes`, `fix stuff`, or `work in progress` are not allowed.
 
-## 14. Framework Compatibility Rule
+## 15. Framework Compatibility Rule
 
 - Type strictness is mandatory, but framework contracts always take precedence.
 - When extending Laravel or third-party framework classes, child method signatures and property declarations must remain fully compatible with parent contracts.
