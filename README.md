@@ -86,7 +86,7 @@ Additionally:
 
 Default application configuration (`.env`):
 
-- `APP_NAME=cross`
+- `APP_NAME="Cross 2.0"`
 - `APP_URL=http://localhost:8080`
 - `DB_CONNECTION=pgsql`
 - `DB_HOST=pgsql`

@@ -11,7 +11,7 @@ services:
     container_name: cross-app
     working_dir: /workspace
     environment:
-      APP_NAME: cross
+      APP_NAME: "Cross 2.0"
       APP_ENV: local
       APP_DEBUG: "true"
       PHP_IDE_CONFIG: serverName=cross-app

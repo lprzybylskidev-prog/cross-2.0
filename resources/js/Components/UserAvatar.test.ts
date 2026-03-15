@@ -29,6 +29,33 @@ describe('UserAvatar', () => {
         expect(wrapper.find('img').exists()).toBe(false);
     });
 
+    it('adds hover styling only for interactive avatars', () => {
+        const wrapper = mount(UserAvatar, {
+            props: {
+                user: {
+                    name: 'Cross Admin',
+                    profile_photo_url: null,
+                },
+                interactive: true,
+            },
+            global: {
+                mocks: {
+                    $page: {
+                        props: {
+                            jetstream: {
+                                managesProfilePhotos: false,
+                            },
+                        },
+                    },
+                },
+            },
+        });
+
+        expect(wrapper.find('div').classes()).toContain(
+            'group-hover:bg-[color:var(--ui-surface-muted)]'
+        );
+    });
+
     it('renders the profile image when jetstream photo support is enabled', () => {
         const wrapper = mount(UserAvatar, {
             props: {

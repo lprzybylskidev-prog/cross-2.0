@@ -15,6 +15,7 @@ use Cross\Infrastructure\Auth\EloquentAuthUserGateway;
 use Cross\Infrastructure\Authorization\SpatieUserPermissionChecker;
 use Cross\Infrastructure\Teams\JetstreamTeamGateway;
 use Cross\Infrastructure\UserPreferences\EloquentUserPreferencesGateway;
+use Illuminate\Support\Str;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -37,6 +38,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->overrideConfiguredAppNameFromEnvironmentFile();
+
         require base_path('routes/breadcrumbs.php');
 
         Gate::before(static function ($user): ?bool {
@@ -48,5 +51,46 @@ class AppServiceProvider extends ServiceProvider
                 ? true
                 : null;
         });
+    }
+
+    private function overrideConfiguredAppNameFromEnvironmentFile(): void
+    {
+        $appName = $this->resolveAppNameFromEnvironmentFile();
+
+        if ($appName === null) {
+            return;
+        }
+
+        config([
+            'app.name' => $appName,
+            'mail.from.name' => $appName,
+        ]);
+    }
+
+    private function resolveAppNameFromEnvironmentFile(): ?string
+    {
+        $environmentFilePath = $this->app->environmentFilePath();
+
+        if (!is_file($environmentFilePath) || !is_readable($environmentFilePath)) {
+            return null;
+        }
+
+        $contents = file_get_contents($environmentFilePath);
+
+        if ($contents === false) {
+            return null;
+        }
+
+        if (!preg_match('/^APP_NAME=(.*)$/m', $contents, $matches)) {
+            return null;
+        }
+
+        $value = trim($matches[1]);
+
+        if ($value === '') {
+            return null;
+        }
+
+        return Str::of($value)->trim()->trim('"\'')->toString();
     }
 }

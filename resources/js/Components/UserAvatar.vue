@@ -11,6 +11,10 @@ const props = defineProps({
         type: String,
         default: 'md',
     },
+    interactive: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const sizeClasses = computed(() => {
@@ -35,6 +39,17 @@ const sizeClasses = computed(() => {
 });
 
 const initials = computed(() => getUserInitials(props.user.name));
+const interactiveImageClasses = computed(() =>
+    props.interactive
+        ? 'transition duration-150 hover:border-[color:var(--ui-border-strong)] hover:brightness-95 group-hover:border-[color:var(--ui-border-strong)] group-hover:brightness-95'
+        : ''
+);
+
+const interactiveFrameClasses = computed(() =>
+    props.interactive
+        ? 'transition duration-150 hover:border-[color:var(--ui-border-strong)] hover:bg-[color:var(--ui-surface-muted)] group-hover:border-[color:var(--ui-border-strong)] group-hover:bg-[color:var(--ui-surface-muted)]'
+        : ''
+);
 </script>
 
 <template>
@@ -43,13 +58,13 @@ const initials = computed(() => getUserInitials(props.user.name));
         :src="user.profile_photo_url"
         :alt="user.name"
         class="shrink-0 border border-[color:var(--ui-border)] object-cover"
-        :class="sizeClasses.image"
+        :class="[sizeClasses.image, interactiveImageClasses]"
     />
 
     <div
         v-else
         class="flex shrink-0 items-center justify-center border border-[color:var(--ui-border)] bg-[color:var(--ui-surface)] font-semibold text-[color:var(--ui-accent-strong)]"
-        :class="sizeClasses.frame"
+        :class="[sizeClasses.frame, interactiveFrameClasses]"
     >
         {{ initials }}
     </div>

@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
+import { formatDocumentTitle } from './Composables/useAppName';
 import { translate } from './lib/translate';
 import { applyThemePreference } from './Composables/useUserPreferences';
 import { getUserInitials } from './lib/profile';
@@ -47,6 +48,16 @@ describe('applyThemePreference', () => {
 
         expect(document.documentElement.dataset.themePreference).toBe('light');
         expect(document.documentElement.dataset.theme).toBe('light');
+    });
+});
+
+describe('formatDocumentTitle', () => {
+    it('places the app name before the page title', () => {
+        expect(formatDocumentTitle('Debtors', 'Cross 2.0')).toBe('Cross 2.0 - Debtors');
+    });
+
+    it('returns only the app name when the page title is empty', () => {
+        expect(formatDocumentTitle('', 'Cross 2.0')).toBe('Cross 2.0');
     });
 });
 

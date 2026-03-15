@@ -1,6 +1,6 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
-import { Head, Link, router, usePage } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import { IconLogout, IconSearch, IconSettings } from '@tabler/icons-vue';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import BreadcrumbsBar from '@/Components/BreadcrumbsBar.vue';
@@ -8,6 +8,8 @@ import FlashNotifications from '@/Components/FlashNotifications.vue';
 import LocaleSwitcher from '@/Components/LocaleSwitcher.vue';
 import ThemeSwitcher from '@/Components/ThemeSwitcher.vue';
 import UserAvatar from '@/Components/UserAvatar.vue';
+import { useAppName } from '@/Composables/useAppName';
+import { useSidebarState } from '@/Composables/useSidebarState';
 import { useTranslations } from '@/Composables/useTranslations';
 
 const props = defineProps({
@@ -25,9 +27,9 @@ const props = defineProps({
     },
 });
 
-const page = usePage();
 const { t } = useTranslations();
-const sidebarCollapsed = ref(false);
+const appName = useAppName();
+const { sidebarCollapsed, toggleSidebarCollapsed } = useSidebarState();
 const mobileSidebarOpen = ref(false);
 const userMenuOpen = ref(false);
 const currentYear = new Date().getFullYear();
@@ -57,7 +59,7 @@ const sideNavigation = computed(() => moduleNavigationItems.value);
 
 const toggleSidebar = () => {
     if (typeof window !== 'undefined' && window.matchMedia('(min-width: 1024px)').matches) {
-        sidebarCollapsed.value = !sidebarCollapsed.value;
+        toggleSidebarCollapsed();
 
         return;
     }
@@ -116,7 +118,7 @@ onBeforeUnmount(() => {
                     <button
                         type="button"
                         class="flex w-full items-center rounded-xl px-2 py-2 text-left transition hover:bg-[color:var(--ui-surface-muted)]"
-                        :title="sidebarCollapsed ? 'Cross 2.0' : undefined"
+                        :title="sidebarCollapsed ? appName : undefined"
                         @click="toggleSidebar"
                     >
                         <div
@@ -137,7 +139,7 @@ onBeforeUnmount(() => {
                             "
                         >
                             <p class="truncate font-semibold text-[color:var(--ui-text)]">
-                                Cross 2.0
+                                {{ appName }}
                             </p>
                         </div>
                     </button>
@@ -224,7 +226,9 @@ onBeforeUnmount(() => {
                         >
                             <ApplicationMark class="h-9 w-9 shrink-0" />
                             <div>
-                                <p class="font-semibold text-[color:var(--ui-text)]">Cross 2.0</p>
+                                <p class="font-semibold text-[color:var(--ui-text)]">
+                                    {{ appName }}
+                                </p>
                             </div>
                         </button>
                     </div>
@@ -291,10 +295,14 @@ onBeforeUnmount(() => {
                             <div class="relative" data-user-menu>
                                 <button
                                     type="button"
-                                    class="inline-flex items-center justify-center text-sm text-[color:var(--ui-text)] transition"
+                                    class="group inline-flex items-center justify-center rounded-2xl text-sm text-[color:var(--ui-text)] transition"
                                     @click.stop="toggleUserMenu"
                                 >
-                                    <UserAvatar :user="$page.props.auth.user" size="nav" />
+                                    <UserAvatar
+                                        :user="$page.props.auth.user"
+                                        size="nav"
+                                        interactive
+                                    />
                                 </button>
 
                                 <Transition name="shell-dropdown">

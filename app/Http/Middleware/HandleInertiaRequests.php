@@ -59,6 +59,9 @@ class HandleInertiaRequests extends Middleware
 
         return [
             ...parent::share($request),
+            'app' => [
+                'name' => config('app.name'),
+            ],
             'breadcrumbs' => $this->resolveBreadcrumbs($request),
             'locale' => $locale->value,
             'translations' => $this->resolveTranslations($locale),

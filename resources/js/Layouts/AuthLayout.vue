@@ -6,6 +6,7 @@ import ApplicationMark from '@/Components/ApplicationMark.vue';
 import FlashNotifications from '@/Components/FlashNotifications.vue';
 import LocaleSwitcher from '@/Components/LocaleSwitcher.vue';
 import ThemeSwitcher from '@/Components/ThemeSwitcher.vue';
+import { useAppName } from '@/Composables/useAppName';
 import { useTranslations } from '@/Composables/useTranslations';
 
 const props = defineProps({
@@ -20,6 +21,7 @@ const props = defineProps({
 });
 
 const { t } = useTranslations();
+const appName = useAppName();
 
 const highlights = computed(() => [
     {
@@ -60,7 +62,7 @@ const highlights = computed(() => [
                 >
                     <ApplicationMark class="h-10 w-10" />
                     <div>
-                        <p class="text-sm font-semibold">Cross 2.0</p>
+                        <p class="text-sm font-semibold">{{ appName }}</p>
                         <p class="text-xs text-[color:var(--ui-text-muted)]">
                             {{ $t('auth.layout.subtitle') }}
                         </p>
