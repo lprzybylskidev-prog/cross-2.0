@@ -71,6 +71,9 @@ Rules:
 - Controllers only orchestrate requests/responses and delegate use cases to the Application layer.
 - Domain entities must not depend on Laravel/framework-specific classes.
 - Domain rules must be explicit, testable, and isolated from delivery concerns.
+- Module boundaries must stay explicit and enforced: each module should own its application flow, domain rules, presentation entrypoints, and infrastructure concerns without leaking ad hoc dependencies into other modules.
+- Cross-module collaboration must happen through explicit application-level contracts, value objects, DTOs, or clearly defined integration points instead of bypassing module boundaries with direct internal coupling.
+- Business rules and reusable decision-making logic must be moved out of framework-specific layers into Domain or Application code as soon as they appear; Laravel-specific classes should remain delivery or integration adapters, not the home of business behavior.
 
 ## 5. Frontend Rules
 
@@ -190,6 +193,7 @@ Recommended test distribution:
 - Documentation must not include implementation history, removed elements, rejected approaches, prompt instructions, or explanations of what is not used.
 - If a component or behavior no longer exists in the codebase, references to it must be removed from documentation instead of being described historically.
 - Changes explicitly marked by the user as temporary, test-only, or short-lived visual experiments do not require dedicated documentation files or README updates when they are intended for near-term removal.
+- As modules grow in complexity, their responsibilities, integration points, workflows, and architectural decisions must be documented in dedicated module documents before the module becomes difficult to understand from code alone.
 
 ## 13. Compliance
 
@@ -199,6 +203,8 @@ If implementation constraints force an exception, the exception must be:
 - documented,
 - justified,
 - approved before merge.
+
+- The real codebase must stay aligned with these rules over time; contributors must treat any growing gap between documented standards and actual implementation as technical debt that must be reduced as part of ongoing development and refactoring.
 
 ## 14. Pre-Commit and Pre-Push Workflow
 
