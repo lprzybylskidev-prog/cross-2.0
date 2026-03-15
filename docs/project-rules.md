@@ -227,6 +227,8 @@ If implementation constraints force an exception, the exception must be:
 - Every commit must start with a type such as `feat:`, `fix:`, `refactor:`, `docs:`, `test:`, or `chore:`.
 - Scoped variants such as `feat(scope): short description` or `fix(scope): short description` should be used when the scope makes the change clearer.
 - Commit descriptions must be concise, lowercase, and written in English.
+- Git commands that modify repository state, such as `git add`, `git restore`, `git commit`, `git rebase`, `git cherry-pick`, `git merge`, or `git push`, must not be run in parallel with other Git commands in the same repository.
+- Before removing `.git/index.lock` or any other Git lock file, contributors must verify that no active Git process is still running for that repository.
 - Large tasks must be split into smaller logical commits created during implementation, not collapsed into one oversized final commit.
 - When follow-up fixes or review corrections are needed, contributors must create additional small commits instead of rewriting everything into one massive commit.
 - Contributors must not push commits automatically as part of implementation work; commits may be prepared locally and pushed only when explicitly requested or when the agreed workflow step is reached.
