@@ -4,22 +4,19 @@ declare(strict_types=1);
 
 namespace Cross\Application\UserPreferences;
 
-use App\Models\User;
 use Cross\Application\UserPreferences\Data\UserPreferencesData;
+use Cross\Application\UserPreferences\Contracts\UserPreferencesGateway;
 
-final class UpdateUserPreferences
+final readonly class UpdateUserPreferences
 {
-    public function handle(?User $user, UserPreferencesData $preferencesData): void
+    public function __construct(private UserPreferencesGateway $userPreferencesGateway) {}
+
+    public function handle(?int $userId, UserPreferencesData $preferencesData): void
     {
-        if ($user === null) {
+        if ($userId === null) {
             return;
         }
 
-        $user
-            ->forceFill([
-                'preferred_locale' => $preferencesData->locale->value,
-                'preferred_theme' => $preferencesData->theme->value,
-            ])
-            ->save();
+        $this->userPreferencesGateway->updatePreferences($userId, $preferencesData);
     }
 }

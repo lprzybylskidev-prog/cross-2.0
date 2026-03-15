@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\UserPreferences;
+namespace Cross\Presentation\Http\Controllers\UserPreferences;
 
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\SetApplicationPreferences;
-use App\Http\Requests\UpdateUserPreferencesRequest;
 use Cross\Application\UserPreferences\Data\UserPreferencesData;
 use Cross\Application\UserPreferences\UpdateUserPreferences;
 use Cross\Domain\Localization\SystemLocale;
 use Cross\Domain\Users\Preferences\UserTheme;
+use Cross\Presentation\Http\Requests\UpdateUserPreferencesRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cookie;
 
@@ -25,7 +25,7 @@ final class UpdateUserPreferencesController extends Controller
             theme: UserTheme::fromNullable($request->string('theme')->toString()),
         );
 
-        $updateUserPreferences->handle($request->user(), $preferencesData);
+        $updateUserPreferences->handle($request->user()?->getKey(), $preferencesData);
         app()->setLocale($preferencesData->locale->value);
 
         return back()

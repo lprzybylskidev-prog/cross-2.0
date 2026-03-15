@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\Debtors;
+namespace Cross\Presentation\Http\Controllers\Debtors;
 
 use App\Http\Controllers\Controller;
 use Cross\Application\Debtors\GetDebtorsPageData;
@@ -14,6 +14,8 @@ final class DebtorsIndexController extends Controller
 {
     public function __invoke(Request $request, GetDebtorsPageData $getDebtorsPageData): Response
     {
-        return Inertia::render('Debtors/Index', $getDebtorsPageData->handle($request->user()));
+        $userId = $request->user()?->getKey();
+
+        return Inertia::render('Debtors/Index', $getDebtorsPageData->handle($userId));
     }
 }

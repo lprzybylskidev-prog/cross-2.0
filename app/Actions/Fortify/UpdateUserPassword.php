@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\Fortify;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use Cross\Application\Auth\UpdateUserPassword as UpdateUserPasswordUseCase;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Contracts\UpdatesUserPasswords;
@@ -13,6 +13,8 @@ use Laravel\Fortify\Contracts\UpdatesUserPasswords;
 class UpdateUserPassword implements UpdatesUserPasswords
 {
     use PasswordValidationRules;
+
+    public function __construct(private readonly UpdateUserPasswordUseCase $updateUserPassword) {}
 
     /**
      * Validate and update the user's password.
@@ -36,10 +38,6 @@ class UpdateUserPassword implements UpdatesUserPasswords
             ],
         )->validateWithBag('updatePassword');
 
-        $user
-            ->forceFill([
-                'password' => Hash::make($input['password']),
-            ])
-            ->save();
+        $this->updateUserPassword->handle($user->getKey(), $input['password']);
     }
 }

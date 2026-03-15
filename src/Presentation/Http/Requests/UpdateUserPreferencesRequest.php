@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests;
+namespace Cross\Presentation\Http\Requests;
 
 use Cross\Domain\Localization\SystemLocale;
 use Cross\Domain\Users\Preferences\UserTheme;

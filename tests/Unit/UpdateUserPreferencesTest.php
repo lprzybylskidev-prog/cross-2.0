@@ -14,10 +14,10 @@ it('updates user locale and theme preferences', function (): void {
         'preferred_theme' => UserTheme::Dark->value,
     ]);
 
-    $service = new UpdateUserPreferences();
+    $service = app(UpdateUserPreferences::class);
 
     $service->handle(
-        $user,
+        $user->getKey(),
         new UserPreferencesData(locale: SystemLocale::English, theme: UserTheme::Light),
     );
 

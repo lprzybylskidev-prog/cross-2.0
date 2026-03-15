@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\Fortify;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use Cross\Application\Auth\ResetUserPassword as ResetUserPasswordUseCase;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Contracts\ResetsUserPasswords;
@@ -13,6 +13,8 @@ use Laravel\Fortify\Contracts\ResetsUserPasswords;
 class ResetUserPassword implements ResetsUserPasswords
 {
     use PasswordValidationRules;
+
+    public function __construct(private readonly ResetUserPasswordUseCase $resetUserPassword) {}
 
     /**
      * Validate and reset the user's forgotten password.
@@ -27,10 +29,6 @@ class ResetUserPassword implements ResetsUserPasswords
             'password' => $this->passwordRules(),
         ])->validate();
 
-        $user
-            ->forceFill([
-                'password' => Hash::make($input['password']),
-            ])
-            ->save();
+        $this->resetUserPassword->handle($user->getKey(), $input['password']);
     }
 }

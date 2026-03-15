@@ -4,18 +4,26 @@ declare(strict_types=1);
 
 namespace Cross\Application\Debtors;
 
-use App\Models\User;
+use Cross\Application\Debtors\Contracts\UserPermissionChecker;
 use Cross\Domain\Security\Permissions\SystemPermission;
 
-final class GetDebtorsPageData
+final readonly class GetDebtorsPageData
 {
+    public function __construct(private UserPermissionChecker $userPermissionChecker) {}
+
     /**
      * @return array{canViewDebtors: bool}
      */
-    public function handle(?User $user): array
+    public function handle(?int $userId): array
     {
         return [
-            'canViewDebtors' => $user?->can(SystemPermission::DebtorsView->value) ?? false,
+            'canViewDebtors' =>
+                $userId !== null
+                    ? $this->userPermissionChecker->hasPermission(
+                        $userId,
+                        SystemPermission::DebtorsView,
+                    )
+                    : false,
         ];
     }
 }

@@ -71,9 +71,16 @@ Rules:
 - Controllers only orchestrate requests/responses and delegate use cases to the Application layer.
 - Domain entities must not depend on Laravel/framework-specific classes.
 - Domain rules must be explicit, testable, and isolated from delivery concerns.
+- `app/` is reserved for Laravel- and package-specific bootstrap concerns such as service providers, Eloquent models, framework policies, and thin adapter classes required by Fortify, Jetstream, Filament, or similar packages.
+- `app/Actions` must not contain business rules, reusable decision-making logic, or full application use cases. If an action exists only because a Laravel or package contract requires that class location or signature, it must stay a thin adapter that validates framework input and delegates the real use case to `src/Application`.
+- `src/Application` must define use cases, orchestration, DTOs, and ports/contracts. It must stay as independent as practical from Eloquent models, facades, service container details, HTTP requests, middleware state, and package-specific APIs.
+- `src/Infrastructure` is the mandatory integration layer for Laravel, Eloquent, queues, mail, permissions, hashing, transactions, Jetstream, Fortify, Spatie, Filament, and all other framework or package dependencies required by Application or Domain flows.
+- `src/Presentation` owns application-specific delivery concerns such as HTTP controllers, requests, presenters, and response mappers when those concerns belong to the product architecture rather than to unavoidable Laravel bootstrap files in `app/`.
 - Module boundaries must stay explicit and enforced: each module should own its application flow, domain rules, presentation entrypoints, and infrastructure concerns without leaking ad hoc dependencies into other modules.
 - Cross-module collaboration must happen through explicit application-level contracts, value objects, DTOs, or clearly defined integration points instead of bypassing module boundaries with direct internal coupling.
 - Business rules and reusable decision-making logic must be moved out of framework-specific layers into Domain or Application code as soon as they appear; Laravel-specific classes should remain delivery or integration adapters, not the home of business behavior.
+- Existing DDD deviations must be reduced whenever a feature or refactor touches the affected area; contributors must not preserve avoidable framework coupling, misplaced use cases, or unclear module boundaries out of convenience.
+- Each growing module must document its layer responsibilities, public integration points, and allowed dependencies before the module becomes difficult to understand from code inspection alone.
 
 ## 5. Frontend Rules
 

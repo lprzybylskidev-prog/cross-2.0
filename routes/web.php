@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\Debtors\DebtorsIndexController;
-use App\Http\Controllers\UserPreferences\UpdateUserPreferencesController;
+use Cross\Presentation\Http\Controllers\Debtors\DebtorsIndexController;
+use Cross\Presentation\Http\Controllers\UserPreferences\UpdateUserPreferencesController;
 use Illuminate\Support\Facades\Route;
 
 Route::put('/preferences', UpdateUserPreferencesController::class)

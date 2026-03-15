@@ -22,9 +22,11 @@ Current examples:
 
 - `Cross\Domain\Security\Permissions\SystemPermission` (enum for system-level permissions),
 - `Cross\Application\Debtors\GetDebtorsPageData` (application use case),
-- `Cross\Application\Admin\EnsureAdminUser` (admin bootstrap use case).
+- `Cross\Application\Admin\EnsureAdminUser` (admin bootstrap use case),
+- `Cross\Infrastructure\Auth\EloquentAuthUserGateway` (Laravel/Eloquent integration adapter),
+- `Cross\Presentation\Http\Controllers\Debtors\DebtorsIndexController` (HTTP presentation entrypoint).
 
-Laravel HTTP controllers delegate business behavior to the Application layer.
+Laravel package adapters in `app/Actions` stay as thin Fortify/Jetstream integration classes, while application-specific HTTP entrypoints may live in `src/Presentation` and delegate business behavior to the Application layer.
 
 ## 3. Authorization Model
 

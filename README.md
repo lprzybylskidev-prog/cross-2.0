@@ -25,6 +25,7 @@ Its purpose is operational case handling for debt recovery workflows.
 
 - Architecture and quality rules (authoritative): [docs/project-rules.md](docs/project-rules.md)
 - Bootstrap architecture baseline: [docs/architecture-bootstrap.md](docs/architecture-bootstrap.md)
+- DDD layering and `app/` vs `src/` boundaries: [docs/ddd-layering.md](docs/ddd-layering.md)
 - Debtors module baseline: [docs/debtors-module.md](docs/debtors-module.md)
 
 ## Service architecture
