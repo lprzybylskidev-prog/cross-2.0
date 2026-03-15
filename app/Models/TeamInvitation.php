@@ -18,7 +18,7 @@ class TeamInvitation extends JetstreamTeamInvitation implements Auditable
      *
      * @var list<string>
      */
-    protected $fillable = ['email', 'role'];
+    protected $fillable = ['team_id', 'email', 'role'];
 
     /**
      * Get the team that the invitation belongs to.

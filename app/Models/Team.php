@@ -25,7 +25,7 @@ class Team extends JetstreamTeam implements Auditable
      *
      * @var list<string>
      */
-    protected $fillable = ['name', 'personal_team'];
+    protected $fillable = ['user_id', 'name', 'personal_team'];
 
     /**
      * The event map for the model.

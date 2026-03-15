@@ -6,6 +6,9 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
+use Cross\Domain\Security\Permissions\SystemPermission;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -17,7 +20,7 @@ use OwenIt\Auditing\Auditable as AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements Auditable
+class User extends Authenticatable implements Auditable, FilamentUser
 {
     use HasApiTokens;
     use AuditableTrait;
@@ -48,7 +51,16 @@ class User extends Authenticatable implements Auditable
      *
      * @var list<string>
      */
-    protected $fillable = ['name', 'email', 'password', 'preferred_locale', 'preferred_theme'];
+    protected $fillable = [
+        'name',
+        'email',
+        'email_verified_at',
+        'password',
+        'current_team_id',
+        'profile_photo_path',
+        'preferred_locale',
+        'preferred_theme',
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -80,5 +92,10 @@ class User extends Authenticatable implements Auditable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->can(SystemPermission::Admin->value);
     }
 }

@@ -27,6 +27,7 @@ Its purpose is operational case handling for debt recovery workflows.
 - Bootstrap architecture baseline: [docs/architecture-bootstrap.md](docs/architecture-bootstrap.md)
 - DDD layering and `app/` vs `src/` boundaries: [docs/ddd-layering.md](docs/ddd-layering.md)
 - Debtors module baseline: [docs/debtors-module.md](docs/debtors-module.md)
+- Filament admin panel coverage and access model: [docs/filament-admin-panel.md](docs/filament-admin-panel.md)
 
 ## Service architecture
 

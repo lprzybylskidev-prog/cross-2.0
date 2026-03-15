@@ -25,6 +25,7 @@ Technology stack:
 - Every feature must be designed before implementation.
 - Implementations should be production-ready and not require immediate refactoring.
 - Prefer clarity, explicitness, and consistency over shortcuts.
+- Administrative interfaces, custom developer commands, and technical tooling exposed by the project must use English labels, names, and output unless a documented exception is explicitly required.
 - Unused code, files, translations, assets, and legacy scaffolding must be removed as part of the current change instead of being left in the repository.
 - Empty directories that exist only as leftovers after removed features, modules, pages, or controllers must be deleted as part of the same change.
 - Empty directories that intentionally preserve the current Laravel, MVC, or DDD project structure may remain when they represent a valid architectural placeholder.
@@ -165,6 +166,10 @@ Rules:
 - The left application navigation must list system modules.
 - The top application navigation must list links that belong to the currently opened module only.
 - Peripheral screens such as user profile or account utilities must not be treated as application modules in the main navigation.
+- The Filament administration panel is part of the system navigation model and must stay aligned with the current database schema and admin-facing workflows.
+- Every new database table, every schema change to an existing table, and every business-logic change that can affect administration workflows must update the Filament panel within the same change.
+- Filament access must be restricted to users holding the `admin` permission; authenticated users without `admin` must receive `403 Forbidden`.
+- Filament resources must be organized into clear English navigation groups based on administrative domain or workflow, and every new resource must be assigned to the appropriate group with a deliberate navigation order.
 
 ## 10. Testing Strategy
 
