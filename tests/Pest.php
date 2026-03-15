@@ -7,7 +7,6 @@ use Tests\TestCase;
 
 putenv('APP_ENV=testing');
 putenv('DB_CONNECTION=sqlite');
-putenv('DB_DATABASE=/workspace/database/database.sqlite');
 putenv('SESSION_DRIVER=array');
 putenv('CACHE_STORE=array');
 $_ENV['APP_ENV'] = 'testing';

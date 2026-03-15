@@ -168,6 +168,7 @@ Rules:
 - shared mechanisms (for example middleware, localization plumbing, breadcrumb sharing, layout-level behavior, or permission infrastructure) must be tested at the shared layer rather than duplicated through module-specific tests,
 - module-specific tests should focus on module behavior, while a single smoke test per module is acceptable only when it verifies module wiring and not shared infrastructure already covered elsewhere.
 - changes explicitly requested as temporary, test-only, visual-only, or throwaway prototypes do not require dedicated tests if they are expected to be removed shortly and do not alter real business behavior.
+- automated tests must use isolated temporary databases and must not depend on persistent SQLite files committed to the repository or reused across test runs.
 
 Recommended test distribution:
 
