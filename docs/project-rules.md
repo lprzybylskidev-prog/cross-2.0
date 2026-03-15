@@ -219,6 +219,7 @@ If implementation constraints force an exception, the exception must be:
 - If tests, analysis, or checks fail, the contributor must fix the code and update documentation in `docs` when required before proceeding.
 - After the project is in a valid state, contributors must run `bash scripts/format.sh`.
 - The required order is: tests, fixes, documentation updates if needed, formatting, `commit`, `push`.
+- If a change affects documentation files only and does not modify application code, configuration, assets, or tests, contributors may skip `bash scripts/test.sh` and `bash scripts/format.sh` for that documentation-only commit.
 - During active development, until the rules explicitly state that this phase has ended, contributors must not create separate follow-up migrations for schema adjustments to tables that already exist.
 - During this active development phase, existing migrations must be edited in place so that one database table remains defined by one migration file.
 - Additional incremental migrations for existing tables are allowed only after the project enters the post-development or production-change phase and the rules explicitly permit standard migration flow.
