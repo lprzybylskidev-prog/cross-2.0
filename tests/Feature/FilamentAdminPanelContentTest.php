@@ -5,8 +5,12 @@ declare(strict_types=1);
 use App\Models\User;
 use Cross\Domain\Security\Permissions\SystemPermission;
 use Illuminate\Support\Facades\DB;
+use Livewire\Livewire;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use App\Filament\Resources\ModelHasPermissions\Pages\ManageModelHasPermissions;
+use App\Filament\Resources\ModelHasRoles\Pages\ManageModelHasRoles;
+use App\Filament\Resources\RoleHasPermissions\Pages\ManageRoleHasPermissions;
 
 it(
     'shows role and direct permission management details on the filament users page',
@@ -116,3 +120,42 @@ it(
             ->assertSeeText('manager');
     },
 );
+
+it('resolves composite-key spatie pivot records for filament table actions', function (): void {
+    $admin = User::factory()->create();
+    Permission::findOrCreate(SystemPermission::Admin->value, 'web');
+    $admin->givePermissionTo(SystemPermission::Admin->value);
+
+    $role = Role::findOrCreate('auditor', 'web');
+    $permission = Permission::findOrCreate('users.review', 'web');
+    $user = User::factory()->create();
+
+    $user->givePermissionTo($permission);
+    $user->assignRole($role);
+    $role->givePermissionTo($permission);
+
+    $this->actingAs($admin);
+
+    Livewire::test(ManageModelHasPermissions::class)
+        ->mountTableAction('view', $permission->id . ':' . User::class . ':' . $user->id)
+        ->assertTableActionDataSet([
+            'permission_id' => $permission->id,
+            'model_type' => User::class,
+            'model_id' => $user->id,
+        ]);
+
+    Livewire::test(ManageModelHasRoles::class)
+        ->mountTableAction('view', $role->id . ':' . User::class . ':' . $user->id)
+        ->assertTableActionDataSet([
+            'role_id' => $role->id,
+            'model_type' => User::class,
+            'model_id' => $user->id,
+        ]);
+
+    Livewire::test(ManageRoleHasPermissions::class)
+        ->mountTableAction('view', $permission->id . ':' . $role->id)
+        ->assertTableActionDataSet([
+            'permission_id' => $permission->id,
+            'role_id' => $role->id,
+        ]);
+});
