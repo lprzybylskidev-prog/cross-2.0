@@ -3,6 +3,12 @@
 declare(strict_types=1);
 
 return [
+    'layout' => [
+        'eyebrow' => 'Przestrzeń operacyjna',
+        'footer' => '© :app. Ta wiadomość została wysłana automatycznie przez system.',
+        'signature' =>
+            'Zachowaj tę wiadomość, jeśli będziesz chciał wrócić do tego procesu później.',
+    ],
     'team_invitation' => [
         'subject' => 'Zaproszenie do zespołu',
         'headline' => 'Otrzymałeś zaproszenie do zespołu :team.',

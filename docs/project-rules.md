@@ -98,6 +98,7 @@ UI/UX rules:
 - the default visual theme is dark mode, with support for light and system themes,
 - theme colors should follow the project palette direction currently based on Catppuccin-inspired dark Mocha and light Latte variants,
 - theme tokens and component styling must be consistent across application pages, authentication pages, and transactional emails,
+- transactional emails must use one shared base layout and shared styling tokens instead of duplicating wrappers or inline presentation in each mail view,
 - visual design should resemble a business application, not a marketing landing page,
 - native browser HTML validation must not be used; forms must rely on project-defined validation logic and messaging,
 - frontend feedback must use a shared flash/notification module that supports backend and frontend events,

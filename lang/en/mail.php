@@ -3,6 +3,12 @@
 declare(strict_types=1);
 
 return [
+    'layout' => [
+        'eyebrow' => 'Operational workspace',
+        'footer' => '© :app. This message was sent automatically by the system.',
+        'signature' =>
+            'Keep this message for future reference if you need to return to this process.',
+    ],
     'team_invitation' => [
         'subject' => 'Team invitation',
         'headline' => 'You have been invited to join the :team team.',
